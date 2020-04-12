@@ -30,10 +30,11 @@ public class ViewAllBlogController extends HttpServlet {
 		try {
 			listBlog = blogDAO.selectAllBlogs();
 			for(Blog bloglist:listBlog) {
-				System.out.println(bloglist.getBlogId());
-				System.out.println(bloglist.getBlogTitle());
-				System.out.println(bloglist.getBlogDescription());
-				System.out.println(bloglist.getPostedOn());
+				System.out.print(bloglist.getBlogId()+"		");
+				System.out.print(bloglist.getBlogTitle()+"		");
+				System.out.print(bloglist.getBlogDescription()+"		");
+				System.out.print(bloglist.getPostedOn());
+				System.out.println();
 			}
 			request.setAttribute("listBlog", listBlog);
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/blogView.jsp");

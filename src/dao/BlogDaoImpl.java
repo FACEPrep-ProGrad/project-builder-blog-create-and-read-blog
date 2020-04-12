@@ -10,6 +10,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,13 @@ public class BlogDaoImpl implements BlogDaoInterface {
 		Statement statement=con.createStatement();
 		ResultSet resultset=statement.executeQuery("SELECT * FROM blog");
 		while(resultset.next()) {
-			blogslist.add(new Blog());
+			Blog blog=new Blog();
+			blog.setBlogId(resultset.getInt("id"));
+			blog.setBlogTitle(resultset.getString("title"));
+			blog.setBlogDescription(resultset.getString("blogdesc"));
+			blog.setPostedOn(resultset.getString("postedon"));
+			blogslist.add(blog);
+			
 		}
 		return blogslist;
 	}

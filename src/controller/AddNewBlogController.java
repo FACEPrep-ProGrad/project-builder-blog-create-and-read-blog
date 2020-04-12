@@ -2,6 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +19,7 @@ import model.Blog;
 public class AddNewBlogController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static int i = 0;
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy");
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Getting into Add New Blog");
 		RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/blogListView.jsp");
@@ -30,10 +33,10 @@ public class AddNewBlogController extends HttpServlet {
 		LocalDate postedOn = LocalDate.now();
 		System.out.println(blogTitle);
 		Blog blog = new Blog();
-	//	blog.setBlogId(++i);
+		blog.setBlogId(++i);
 		blog.setBlogTitle(blogTitle);
 		blog.setBlogDescription(blogDescription);
-		blog.setPostedOn(postedOn);
+		blog.setPostedOn(dtf.format(postedOn));
 		
 		BlogDaoImpl blogDao = new BlogDaoImpl();
 		try {

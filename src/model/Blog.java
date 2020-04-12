@@ -12,7 +12,7 @@ public class Blog{
 	int blogId;
 	String blogTitle;
 	String blogDescription;
-	LocalDate postedOn;
+	String postedOn;
 	
 	public int getBlogId() {
 		return blogId;
@@ -32,10 +32,10 @@ public class Blog{
 	public void setBlogDescription(String blogDescription) {
 		this.blogDescription = blogDescription;
 	}
-	public LocalDate getPostedOn() {
+	public String getPostedOn() {
 		return postedOn;
 	}
-	public void setPostedOn(LocalDate postedOn) {
+	public void setPostedOn(String postedOn) {
 		this.postedOn = postedOn;
 	}
 }
