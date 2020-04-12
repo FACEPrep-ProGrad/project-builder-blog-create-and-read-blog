@@ -26,16 +26,22 @@ public class ViewAllBlogController extends HttpServlet {
 		System.out.println("View All Blogs");
 		System.out.println("Getting all blog post");
 		BlogDaoImpl blogDAO = new BlogDaoImpl();
-		List<Blog> listBlog = blogDAO.selectAllBlogs();
-		for(Blog bloglist:listBlog) {
-			System.out.println(bloglist.getBlogId());
-			System.out.println(bloglist.getBlogTitle());
-			System.out.println(bloglist.getBlogDescription());
-			System.out.println(bloglist.getPostedOn());
+		List<Blog> listBlog;
+		try {
+			listBlog = blogDAO.selectAllBlogs();
+			for(Blog bloglist:listBlog) {
+				System.out.println(bloglist.getBlogId());
+				System.out.println(bloglist.getBlogTitle());
+				System.out.println(bloglist.getBlogDescription());
+				System.out.println(bloglist.getPostedOn());
+			}
+			request.setAttribute("listBlog", listBlog);
+			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/blogView.jsp");
+			rd.forward(request, response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		request.setAttribute("listBlog", listBlog);
-		RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/blogView.jsp");
-		rd.forward(request, response);
 	}
 
 	

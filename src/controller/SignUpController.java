@@ -53,7 +53,7 @@ public class SignUpController extends HttpServlet {
 		user.setEmail(email);
 		user.setPassword(password);
 		UserDAO userdao=new UserDAO();
-		user.setDate(date);
+		//user.setDate(date);
 		int checkUser = userdao.signUp(user);
 		
 		if(checkUser!=0)
@@ -61,7 +61,7 @@ public class SignUpController extends HttpServlet {
 						
 			System.out.println(user.getEmail());
 			System.out.println(user.getPassword());
-			System.out.println(user.getDate());
+			//System.out.println(user.getDate());
 			request.setAttribute("message", "Registration Successful");
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/signupView.jsp");
 			rd.forward(request, response);
