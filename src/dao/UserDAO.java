@@ -9,47 +9,45 @@ import model.User;
 import utility.ConnectionManager;
 
 public class UserDAO implements UserDaoInterface {
-
-	public int signUp(User user) {
-		String INSERT_USERS_SQL = "INSERT INTO USERS(email, password)VALUES(?,?)";
-
-		int result = 0;
-		try
-		{
-			Connection connection = ConnectionManager.getConnection();
-			// Step 2:Create a statement using connection object
-			PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL);
-			preparedStatement.setString(1,user.getEmail());
-			preparedStatement.setString(2,user.getPassword());
-			System.out.println(preparedStatement);
-			// Step 3: Execute the query or update query
-			result = preparedStatement.executeUpdate();
-		} catch (SQLException e) {
+		
+	public int signUp(User user)  {
+		
+		 try {
+			Connection con = ConnectionManager.getConnection();
+		    int result = 0;	
+		    String sql = "INSERT INTO USERS(email, password)VALUES(?,?)";
+		   
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1,user.getEmail());
+			st.setString(2,user.getPassword());
+			
+			
+			result = st.executeUpdate();
+			return result;
+		} catch (Exception e) {
 			System.out.println(e);
 		}
-		return result;
+		return 0;
 	}
 	
-	public boolean loginUser(User user) {
-		boolean status = false;
-		try{
-			Connection connection = ConnectionManager.getConnection();
+	public boolean loginUser(User user)  {
+		try {
+			Connection con = ConnectionManager.getConnection();
+			boolean result = false;
 		
-				// Step 2:Create a statement using connection object
-		PreparedStatement preparedStatement = connection.prepareStatement("select * from users where email = ? and password = ? ");
+			PreparedStatement st = con.prepareStatement("SELECT * FROM USERS WHERE email = ? and password = ? ");
 		
-			preparedStatement.setString(1, user.getEmail());
-			preparedStatement.setString(2, user.getPassword());
+			st.setString(1, user.getEmail());
+			st.setString(2, user.getPassword());
 
-			System.out.println(preparedStatement);
-			ResultSet rs = preparedStatement.executeQuery();
-			status = rs.next();
-
-		} catch (SQLException e) {
-			// process sql exception
+			System.out.println(st);
+			ResultSet rs = st.executeQuery();
+			result = rs.next();
+			return result;
+		} catch (Exception e) {
 			System.out.println(e);
 		}
-		return status;
+		return false;
 	}
 
 }
