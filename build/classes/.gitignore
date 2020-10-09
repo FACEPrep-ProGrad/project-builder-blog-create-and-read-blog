@@ -1,6 +1,4 @@
-/businesslogic/
 /controller/
 /dao/
-/jdbc.properties
+/businesslogic/
 /model/
-/utility/

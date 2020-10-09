@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import businesslogic.ValidateUser;
+//import businesslogic.ValidateUser;
 import dao.UserDAO;
 import model.User;
 

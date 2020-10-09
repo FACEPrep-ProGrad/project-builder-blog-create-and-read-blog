@@ -2,7 +2,6 @@ package businesslogic;
 
 
 public class ValidateUser {
-/*
 
 	public boolean validate(String email, String password) {
 		
@@ -12,6 +11,4 @@ public class ValidateUser {
 		else 
 			return false;
 	}
-*/
 }
-
