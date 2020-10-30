@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -26,9 +28,14 @@ public class ViewAllBlogController extends HttpServlet {
 		System.out.println("View All Blogs");
 		System.out.println("Getting all blog post");
 		BlogDaoImpl blogDAO = new BlogDaoImpl();
-		List<Blog> listBlog = blogDAO.selectAllBlogs();
+		List<Blog> listBlog = new ArrayList<Blog>();
+		try {
+			listBlog = blogDAO.selectAllBlogs();
+		} catch (ClassNotFoundException | SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for(Blog bloglist:listBlog) {
-			System.out.println(bloglist.getBlogId());
 			System.out.println(bloglist.getBlogTitle());
 			System.out.println(bloglist.getBlogDescription());
 			System.out.println(bloglist.getPostedOn());
