@@ -1,55 +1,71 @@
 package dao;
 
-import java.sql.Connection;
+import java.io.IOException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
-import model.User;
 import utility.ConnectionManager;
+import model.User;
 
-public class UserDAO implements UserDaoInterface {
+public class UserDAO implements UserDaoInterface{
 
-	public int signUp(User user) {
-		String INSERT_USERS_SQL = "INSERT INTO USERS(email, password)VALUES(?,?)";
+	@Override
+	public int signUp(User user) throws ClassNotFoundException, SQLException, IOException {
+		String email = user.getEmail();
+		String password = user.getPassword();
+		LocalDate date = user.getDate();
+		
+		ConnectionManager cm = new ConnectionManager();
+		// insert all the details into database
+		
+		String sql = "insert into USERINFO(email, password, signupdate) VALUES(?,?,?)";
+		
+		//CREATE STATEMENT OBJECT
+		
+		PreparedStatement st = cm.getConnection().prepareStatement(sql);
+		
+		st.setString(1 , password);
+		st.setString(2 , email);
+		st.setDate(3 , Date.valueOf(date));
+		
+		st.executeUpdate();
+		cm.getConnection().close();
+		return 0;
+	}
 
-		int result = 0;
-		try
-		{
-			Connection connection = ConnectionManager.getConnection();
-			// Step 2:Create a statement using connection object
-			PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL);
-			preparedStatement.setString(1,user.getEmail());
-			preparedStatement.setString(2,user.getPassword());
-			System.out.println(preparedStatement);
-			// Step 3: Execute the query or update query
-			result = preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println(e);
+	@Override
+	public boolean loginUser(User user) throws ClassNotFoundException, SQLException, IOException {
+		String email = user.getEmail();
+		String password = user.getPassword();
+		
+		ConnectionManager con = new ConnectionManager();
+		Statement st = con.getConnection().createStatement();
+		
+		ResultSet rs = st.executeQuery("SELECT * from USERINFO");
+		
+		while(rs.next()) {
+			System.out.println("user : Email => " + email + "   password => " + password);
+			System.out.println("database : Email => " + rs.getString("EMAIL") + "   password => " + rs.getString("PASSWORD"));
+
+			if(email.equals(rs.getString("EMAIL")) && password.equals(rs.getString("PASSWORD"))) {
+				System.out.println("Login successFully");
+				con.getConnection().close();
+				return true;
+			}
+			else {
+				System.out.println("Not Login successFully");
+
+				con.getConnection().close();
+				return false;
+			}
 		}
-		return result;
+		
+		return false;
 	}
 	
-	public boolean loginUser(User user) {
-		boolean status = false;
-		try{
-			Connection connection = ConnectionManager.getConnection();
-		
-				// Step 2:Create a statement using connection object
-		PreparedStatement preparedStatement = connection.prepareStatement("select * from users where email = ? and password = ? ");
-		
-			preparedStatement.setString(1, user.getEmail());
-			preparedStatement.setString(2, user.getPassword());
-
-			System.out.println(preparedStatement);
-			ResultSet rs = preparedStatement.executeQuery();
-			status = rs.next();
-
-		} catch (SQLException e) {
-			// process sql exception
-			System.out.println(e);
-		}
-		return status;
-	}
-
 }

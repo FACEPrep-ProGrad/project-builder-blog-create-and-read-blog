@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -36,12 +38,20 @@ public class LoginController extends HttpServlet {
 		String email = request.getParameter("email"); //  get the email value from the jsp/html page
 		String password = request.getParameter("password"); //  get the password value from the jsp/html page
 
-		User user = new User();
-		user.setEmail(email);
-		user.setPassword(password);
-		UserDAO userdao = new UserDAO();
+		// Fill your code
 		
-		boolean validateUser = userdao.loginUser(user);
+		User user = new User(email, password, LocalDate.now());
+		UserDAO userDAO = new UserDAO();
+
+		
+		boolean validateUser = false;
+		try {
+			validateUser = userDAO.loginUser(user);
+		} catch (ClassNotFoundException | SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		if(validateUser) {
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/blogView.jsp");
 			rd.forward(request, response);
